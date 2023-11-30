@@ -35,7 +35,6 @@
                             <p class="mb-6 text-dark font-bold">Ваш код: <span class="text-2xl">{{ Auth::user()->code }}</span></p>
                         </div>
                     @endif
-  ь
                     <div class="bg-[#b6da3a82] p-2 mt-4 mb-4">
                         <p class="mb-6 text-sm text-dark font-bold">Адрес склада в Китае</p>
                         <p class="mb-6 text-sm text-dark" id="china">@yield( 'chinaaddress' ) <br />
