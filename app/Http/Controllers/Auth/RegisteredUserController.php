@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Configuration;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -20,7 +21,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $config = Configuration::query()->select('agreement')->first();
+        return view('auth.register')->with(compact( 'config'));
     }
 
     /**
@@ -43,13 +45,13 @@ class RegisteredUserController extends Controller
             return redirect()->back()->with('error', 'Неверный номер, пожалуйста, перепроверьте');
         }
 
-
         $user = User::create([
             'name' => $request->name,
             'surname' => $request->surname,
             'city' => $request->city,
             'login' => $request->login,
             'password' => $request->password,
+            'code' => $this->generateCode(),
         ]);
 
         event(new Registered($user));
@@ -57,5 +59,19 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function generateCode ()
+    {
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        do {
+            $code = '';
+            for ($i = 0; $i < 4; $i++) {
+                $code .= $characters[rand(0, strlen($characters) - 1)];
+            }
+            $exists = User::query()->where('code', $code)->exists();
+        } while ($exists);
+
+        return $code;
     }
 }
