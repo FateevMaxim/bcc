@@ -63,7 +63,7 @@ class RegisteredUserController extends Controller
 
     public function generateCode ()
     {
-        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         do {
             $code = '';
             for ($i = 0; $i < 4; $i++) {
