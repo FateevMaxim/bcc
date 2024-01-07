@@ -87,7 +87,7 @@ class ProfileController extends Controller
 
     public function searchClient (Request $request)
     {
-        $users = User::query()->where('login', 'LIKE', '%'.$request->phone.'%')->get();
+        $users = User::query()->where('login', 'LIKE', '%'.$request->phone.'%')->orWhere('code', 'LIKE', '%'.$request->phone.'%')->get();
         $messages = Message::all();
         $search_phrase = $request->phone;
         $config = Configuration::query()->select('address', 'title_text')->first();
