@@ -183,6 +183,10 @@
                                     <p><small>Дата регистрации</small><br />
                                         <span>{{$user->created_at}}</span></p>
                                 </li>
+                                <li class="flex items-center">
+                                    <p><small>Код клиента</small><br />
+                                        <span>{{$user->code}}</span></p>
+                                </li>
                                 <li class="grid justify-center text-center gap-4">
                                     <form method="POST" action="{{ route('client-access', ['id' => $user->id] ) }}" class="grid items-center w-full justify-end mt-4">
                                         <x-classic-button>
