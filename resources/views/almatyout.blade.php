@@ -41,6 +41,7 @@
                                     <p><b>Имя:</b> <span id="surnamename"></span> &nbsp; <span id="name"></span></p>
                                     <p><b>Номер телефона:</b> <span id="login"></span></p>
                                     <p><b>Город:</b> <span id="city"></span></p>
+                                    <p><b>Код:</b> <span id="code"></span></p>
 
                                     <p><b>Трек код:</b> <span id="trackcode"></span></p>
 
@@ -97,6 +98,7 @@
                                     $("#surname").text(data[1].surname);
                                     $("#name").text(data[1].name);
                                     $("#login").text(data[1].login);
+                                    $("#code").text(data[1].code);
                                     $("#city").text(data[1].city);
                                     $("#to_china").text(data[0].to_china);
                                     $("#trackcode").text(track_code);
