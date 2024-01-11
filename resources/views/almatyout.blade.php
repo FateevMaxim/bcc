@@ -61,7 +61,7 @@
                                     <h4>Дата выдачи клиенту</h4>
                                     <p><small id="to_client"></small></p>
                                     <p><small id="to_client_city"></small></p>
-3.                                    <h4>Дата получения клиентом</h4>
+                                    <h4>Дата получения клиентом</h4>
                                     <p><small id="client_accept"></small></p>
                                 </div>
                             </div>
