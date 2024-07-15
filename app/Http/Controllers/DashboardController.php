@@ -26,6 +26,10 @@ class DashboardController extends Controller
         $config = Configuration::query()->select('address', 'title_text', 'address_two')->first();
         $cities = City::query()->select('title')->get();
         $messages = Message::all();
+        $china_address = "china";
+        if (isset(Auth::user()->branchinfo->china_address)){
+            $china_address = Auth::user()->branchinfo->china_address;
+        }
         if (Auth::user()->is_active === 1 && Auth::user()->type === null){
             $tracks = ClientTrackList::query()
                 ->leftJoin('track_lists', 'client_track_lists.track_code', '=', 'track_lists.track_code')
@@ -36,60 +40,59 @@ class DashboardController extends Controller
                 ->where('client_track_lists.status',null)
                 ->orderByDesc('client_track_lists.id')
                 ->get();
-
             $count = count($tracks);
-            return view('dashboard')->with(compact('tracks', 'count', 'messages', 'config'));
+            return view('dashboard')->with(compact('tracks', 'count', 'messages', 'config', 'china_address'));
         }elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'stock'){
             $config = Configuration::query()->select('address', 'title_text', 'address_two')->first();
             $count = TrackList::query()->whereDate('created_at', Carbon::today())->count();
-            return view('stock', ['count' => $count, 'config' => $config, 'qr' => $qrChina]);
+            return view('stock', ['count' => $count, 'config' => $config, 'qr' => $qrChina, 'china_address' => $china_address]);
         }elseif (Auth::user()->type === 'newstock') {
             $count = TrackList::query()->whereDate('created_at', Carbon::today())->count();
-            return view('newstock')->with(compact('count', 'config', 'qr'));
+            return view('newstock')->with(compact('count', 'config', 'qr', 'china_address'));
         }elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'almatyin'){
             $config = Configuration::query()->select('address', 'title_text', 'address_two')->first();
             $count = TrackList::query()->whereDate('to_almaty', Carbon::today())->count();
-            return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'Алматы', 'qr' => $qr]);
+            return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'Алматы', 'qr' => $qr, 'china_address' => $china_address]);
         }elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'kizilorgain') {
                 $count = TrackList::query()->whereDate('to_city', Carbon::today())->where('status', 'Получено на складе в Кызылорде')->count();
-                return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'Кызылорде', 'qr' => $qrKizilorga]);
+                return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'Кызылорде', 'qr' => $qrKizilorga, 'china_address' => $china_address]);
         }elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'shimkentin') {
                 $count = TrackList::query()->whereDate('to_city', Carbon::today())->where('status', 'Получено на складе в Шымкенте')->count();
-                return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'Шымкенте', 'qr' => $qrShimkent]);
+                return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'Шымкенте', 'qr' => $qrShimkent, 'china_address' => $china_address]);
         }elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'astanain') {
                 $count = TrackList::query()->whereDate('to_city', Carbon::today())->where('status', 'Получено на складе в Астане')->count();
-                return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'Астане', 'qr' => $qrAstana]);
+                return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'Астане', 'qr' => $qrAstana, 'china_address' => $china_address]);
         }elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'tarazin') {
                 $count = TrackList::query()->whereDate('to_city', Carbon::today())->where('status', 'Получено на складе в Таразе')->count();
-                return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'Таразе', 'qr' => $qrTaraz]);
+                return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'Таразе', 'qr' => $qrTaraz, 'china_address' => $china_address]);
         }elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'almatyout'){
             $config = Configuration::query()->select('address', 'title_text', 'address_two')->first();
             $count = TrackList::query()->whereDate('to_client', Carbon::today())->count();
             $cities = City::query()->select('title')->get();
-            return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'Алматы', 'qr' => $qr]);
+            return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'Алматы', 'qr' => $qr, 'china_address' => $china_address]);
         } elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'kizilordaout') {
             $count = TrackList::query()->whereDate('to_client_city', Carbon::today())->count();
-            return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'Кызалорде', 'qr' => $qrKizilorga]);
+            return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'Кызалорде', 'qr' => $qrKizilorga, 'china_address' => $china_address]);
         } elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'shimkentout') {
             $count = TrackList::query()->whereDate('to_client_city', Carbon::today())->where('city', 'Шымкент')->count();
-            return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'Шымкенте', 'qr' => $qrShimkent]);
+            return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'Шымкенте', 'qr' => $qrShimkent, 'china_address' => $china_address]);
         } elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'tarazout') {
             $count = TrackList::query()->whereDate('to_client_city', Carbon::today())->count();
-            return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'Таразе', 'qr' => $qrTaraz]);
+            return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'Таразе', 'qr' => $qrTaraz, 'china_address' => $china_address]);
         }elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'astanaout') {
             $count = TrackList::query()->whereDate('to_client_city', Carbon::today())->count();
-            return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'Астане', 'qr' => $qrAstana]);
+            return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'Астане', 'qr' => $qrAstana, 'china_address' => $china_address]);
         }elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'othercity'){
             $config = Configuration::query()->select('address', 'title_text', 'address_two')->first();
             $count = TrackList::query()->whereDate('to_client', Carbon::today())->count();
             $cities = City::query()->select('title')->get();
-            return view('othercity')->with(compact('count', 'config', 'cities', 'qr'));
+            return view('othercity')->with(compact('count', 'config', 'cities', 'qr', 'china_address'));
         }elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'admin' || Auth::user()->is_active === 1 && Auth::user()->type === 'moderator'){
             $messages = Message::all();
             $config = Configuration::query()->select('address', 'title_text', 'address_two')->first();
             $search_phrase = '';
-            $users = User::query()->select('id', 'name', 'surname', 'type', 'login', 'city', 'code', 'is_active', 'block', 'password', 'created_at')->where('type', null)->where('is_active', false)->get();
-            return view('admin')->with(compact('users', 'messages', 'search_phrase', 'config'));
+            $users = User::query()->select('id', 'name', 'surname', 'type', 'login', 'city', 'branch', 'code', 'is_active', 'block', 'password', 'created_at')->where('type', null)->where('is_active', false)->get();
+            return view('admin')->with(compact('users', 'messages', 'search_phrase', 'config', 'china_address'));
         }
         $config = Configuration::query()->select('whats_app')->first();
         return view('register-me')->with(compact( 'config'));

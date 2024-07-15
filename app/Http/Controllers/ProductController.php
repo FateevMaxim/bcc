@@ -140,7 +140,7 @@ class ProductController extends Controller
         $track_code_statuses =  TrackList::query()->select('to_china', 'to_almaty', 'city', 'to_client', 'client_accept', 'to_city', 'to_client_city',)
             ->where('track_code', $request['track_code'])->first();
         if ($track_code){
-            $user_data = User::query()->select('name', 'surname', 'login', 'city', 'block', 'code')->where('id', $track_code->user_id)->first();
+            $user_data = User::query()->select('name', 'surname', 'login', 'city', 'block', 'code', 'branch')->where('id', $track_code->user_id)->first();
         }else{
             $user_data = [
                 'name' => 'нет',

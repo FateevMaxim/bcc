@@ -48,7 +48,7 @@
 
                     <div class="bg-[#fab4b4] p-2 mt-4 mb-4">
                         <p><span>Образец</span></p>
-                        <img src="{{asset('images/newchina.jpeg')}}" alt="China">
+                        @yield( 'china_address' )
                     </div>
 
                     <hr class="h-px my-8 bg-gray-200 border-0">

@@ -1,18 +1,23 @@
 @if(isset($config->address)) @section( 'chinaaddress', $config->address ) @endif
 @if(isset($config->title_text)) @section( 'title_text', $config->title_text ) @endif
 @if(isset($config->address_two)) @section( 'address_two', $config->address_two ) @endif
+@if(isset($china_address))
+    @section('china_address')
+        <img src="{{ asset('images/' . $china_address . '.jpg') }}" alt="China">
+    @endsection
+@endif
 
 <x-app-layout>
         <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
                 @if(session()->has('message'))
-                    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800" role="alert">
+                    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
                         <span class="font-medium">{{ session()->get('message') }}
                     </div>
                 @endif
 
-                <div class="grid grid-cols-1 max-w-3xl mx-auto md:grid-cols-2 h-22 pl-6 pr-6 pb-4">
+                <div class="grid grid-cols-1 mx-auto md:grid-cols-3 h-22 pl-6 pr-6 pb-4">
 
                         <div class="min_height round_border p-4 relative">
                             <div>
@@ -30,7 +35,12 @@
                             </div>
 
                         </div>
+                    <div id="track_codes_list" class="round_border min_height p-4">
 
+                    </div>
+                    <div class="grid hidden" id="clear_track_codes">
+
+                    </div>
                         <div class="grid md:mt-0 mt-4 p-4 min_height round_border relative">
                             <div class="grid mt-5">
                                 <div>
@@ -41,6 +51,7 @@
                                     <p><b>Имя:</b> <span id="surnamename"></span> &nbsp; <span id="name"></span></p>
                                     <p><b>Номер телефона:</b> <span id="login"></span></p>
                                     <p><b>Город:</b> <span id="city"></span></p>
+                                    <p><b>Филиал:</b> <span id="branch"></span></p>
                                     <p><b>Код:</b> <span id="code"></span></p>
 
                                     <p><b>Трек код:</b> <span id="trackcode"></span></p>
@@ -95,11 +106,13 @@
                             /* отправляем данные методом POST */
                             $.post( url, { track_code: track_code } )
                                 .done(function( data ) {
+                                    document.getElementById('track_code').value = '';
                                     $("#surname").text(data[1].surname);
                                     $("#name").text(data[1].name);
                                     $("#login").text(data[1].login);
                                     $("#code").text(data[1].code);
                                     $("#city").text(data[1].city);
+                                    $("#branch").text(data[1].branch);
                                     $("#to_china").text(data[0].to_china);
                                     $("#trackcode").text(track_code);
                                     $("#to_almaty").text(data[0].to_almaty);
@@ -133,43 +146,80 @@
 
                                 });
                         });
-
-                        /* прикрепить событие submit к форме */
+/*
+                        /!* прикрепить событие submit к форме *!/
                         $("#almatyOut").submit(function(event) {
-                            /* отключение стандартной отправки формы */
+                            /!* отключение стандартной отправки формы *!/
                             event.preventDefault();
 
-                            /* собираем данные с элементов страницы: */
+                            /!* собираем данные с элементов страницы: *!/
                             var $form = $( this ),
                                 track_codes = $("#trackcode").text();
                             to_city = $("#city_name").text();
                             url = $form.attr( 'action' );
 
-                            /* отправляем данные методом POST */
+                            /!* отправляем данные методом POST *!/
                             $.post( url, { track_codes: track_codes, to_city: to_city } )
                                 .done(function( data ) {
                                     location.reload();
                                 });
 
-                        });
-
-                        /* прикрепить событие submit к форме */
-                        $("#clear").click(function(event) {
-                            /* отключение стандартной отправки формы */
-                            event.preventDefault();
-
-                            track_codes = $("#trackcode").text();
-                            url = 'almatyout-product';
-
-                            /* отправляем данные методом POST */
-                            $.post( url, { track_codes: track_codes, send: true } )
-                                .done(function( data ) {
-                                    location.reload();
-                                });
-
-                        });
-
+                        });*/
                     </script>
+                        <script>
+
+                            let code = "";
+                            var number = 1;
+
+                            document.addEventListener('keypress', e => {
+                                if (e.key === "Enter") {
+                                    $('#track_codes_list').append('<h2>'+number+'. '+code+'</h2>');
+                                    $('#clear_track_codes').append(code+'\r\n');
+                                    $("#count").text(number);
+                                    number++;
+                                    code = "";
+                                } else {
+                                    if(e.code[0] === "D"){
+                                        code += e.code[5]
+                                        return
+                                    }
+                                    code += e.code[3];
+                                }
+                            });
+
+                            /* прикрепить событие submit к форме */
+                            $("#almatyOut").submit(function(event) {
+                                /* отключение стандартной отправки формы */
+                                event.preventDefault();
+
+                                /* собираем данные с элементов страницы: */
+                                var $form = $( this ),
+                                    track_codes = $("#clear_track_codes").html();
+                                to_city = $("#city_name").text();
+                                url = $form.attr( 'action' );
+
+                                /* отправляем данные методом POST */
+                                $.post( url, { track_codes: track_codes } )
+                                    .done(function( data ) {
+                                        document.getElementById('track_code').value = '';
+                                        location.reload();
+                                    });
+
+                            });
+
+                            /* прикрепить событие submit к форме */
+                            $("#clear").click(function(event) {
+                                /* отключение стандартной отправки формы */
+                                event.preventDefault();
+
+                                $("#track_codes_list").html('');
+                                $("#clear_track_codes").html('');
+                                number = 1;
+                                $("#count").text('0');
+
+                            });
+
+                        </script>
                 </div>
 
                     @include('components.scanner-settings')

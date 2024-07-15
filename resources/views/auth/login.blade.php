@@ -42,9 +42,11 @@
                 </x-secondary-button>
             </div>
             <div class="flex items-center justify-end mt-4">
-                <a href="https://api.whatsapp.com/send?phone={{$config->whats_app}}&text=Здравствуйте! Напомните, пожалуйста, мой пароль" class="w-9/12 mx-auto">
-                    Забыли пароль?
-                </a>
+                @if(!empty($config->whats_app))
+                    <a href="https://api.whatsapp.com/send?phone={{ $config->whats_app }}&text=Здравствуйте! Напомните, пожалуйста, мой пароль" class="w-9/12 mx-auto">
+                        Забыли пароль?
+                    </a>
+                @endif
             </div>
 <div class="flex w-9/12 gap-2 mt-4 mx-auto md:justify-between">
     <div class="flex-1">
