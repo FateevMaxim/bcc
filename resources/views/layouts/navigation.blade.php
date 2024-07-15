@@ -37,12 +37,12 @@
                     @endif
                     <div class="bg-[#b6da3a82] p-2 mt-4 mb-4">
                         <p class="mb-6 text-sm text-dark font-bold">Адрес склада в Китае</p>
-                        <p class="mb-6 text-sm text-dark" id="china">@yield( 'chinaaddress' ) <br />
+                        <p class="mb-6 text-sm text-dark" id="china">{{ \Illuminate\Support\Facades\Auth::user()->branchinfo->address }} <br />
                             <b>({{ \Illuminate\Support\Facades\Auth::user()->login }}){{ \Illuminate\Support\Facades\Auth::user()->name }} </b><br />
                             收货人: <b>@yield( 'title_text' )({{ Auth::user()->city }})</b> <br />
                             电话: <b>@yield( 'address_two' )</b>
                         </p>
-                        <p class="mb-6 text-sm text-dark" style="display: none;" id="chinaaddress">BBC.{{ Auth::user()->code }}@yield( 'address_two' ) @yield( 'chinaaddress' ){{ Auth::user()->code }}.{{ Auth::user()->city }}</p>
+                        <p class="mb-6 text-sm text-dark" style="display: none;" id="chinaaddress">{{ \Illuminate\Support\Facades\Auth::user()->branchinfo->address }}{{ Auth::user()->code }}.{{ Auth::user()->city }}</p>
                         <button onclick="copyText()" class="focus:outline-none text-white bg-[#b6da3a] hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Копировать</button>
                     </div>
 
