@@ -47,17 +47,17 @@ class ProductController extends Controller
             $city_field = 'to_almaty';
             $city_value = 'Получено на складе в Алматы';
             $reg_field = 'reg_almaty';
-        }elseif (Auth::user()->type === 'kizilorgain'){
+        }elseif (Auth::user()->type === 'kulagerin'){
             $city_field = 'to_city';
-            $city_value = 'Получено на складе в Кызылорде';
-            $city = 'Кызылорда';
+            $city_value = 'Получено на складе в мкр.Кулагер 7';
+            $city = 'мкр.Кулагер 7';
             $reg_field = 'reg_city';
-        }elseif (Auth::user()->type === 'shimkentin'){
+        }elseif (Auth::user()->type === 'bekin'){
             $city_field = 'to_city';
-            $city_value = 'Получено на складе в Шымкенте';
-            $city = 'Шымкент';
+            $city_value = 'Получено на складе в ул.Бекмаханова 56а';
+            $city = 'ул.Бекмаханова 56а';
             $reg_field = 'reg_city';
-        }elseif (Auth::user()->type === 'tarazin'){
+        }/*elseif (Auth::user()->type === 'tarazin'){
             $city_field = 'to_city';
             $city_value = 'Получено на складе в Таразе';
             $city = 'Тараз';
@@ -67,7 +67,7 @@ class ProductController extends Controller
             $city_value = 'Получено на складе в Астане';
             $city = 'Астана';
             $reg_field = 'reg_city';
-        }
+        }*/
 
 
         foreach ($array as $ar){

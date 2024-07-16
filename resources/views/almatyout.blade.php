@@ -199,7 +199,7 @@
                                 url = $form.attr( 'action' );
 
                                 /* отправляем данные методом POST */
-                                $.post( url, { track_codes: track_codes } )
+                                $.post( url, { track_codes: track_codes, 'to_city': to_city } )
                                     .done(function( data ) {
                                         document.getElementById('track_code').value = '';
                                         location.reload();

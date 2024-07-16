@@ -10,7 +10,7 @@
 
                 <div class="min_height round_border p-4 relative">
                     <div>
-                        <h3 class="mt-0 p-4 text-2xl font-medium leading-tight text-primary">Пункт отправки в другой город</h3>
+                        <h3 class="mt-0 p-4 text-2xl font-medium leading-tight text-primary">Пункт отправки в другой филиал</h3>
                     </div>
 
                     <div class="absolute p-4 bottom-0">
@@ -46,7 +46,7 @@
                                 <div>
                                     @csrf
                                     <select id="city" name="city" class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" required>
-                                        <option>Выберите город</option>
+                                        <option>Выберите филиал</option>
                                         @foreach($cities as $city)
                                             <option value="{{ $city->title }}">{{ $city->title }}</option>
                                         @endforeach

@@ -109,36 +109,34 @@
                 <div class="grid grid-cols-1 sm:grid-cols-3 ml-5 mr-5 gap-2">
 
                     @foreach($tracks as $track)
-                        <div class="w-full bg-white border border-indigo-200 rounded-lg shadow">
+                        <div class="w-full bg-white border border-indigo-200 rounded-lg shadow" id="card{{$track->track_code}}">
                             <ul class="grid grid-cols-1 p-3 text-xl font-medium text-white border-b border-gray-200 rounded-t-lg"
                                 @if($track->to_china == null && $track->to_almaty == null && $track->to_client == null && $track->client_accept == null && $track->to_city == null && $track->to_client_city == null) style="background-color: rgb(168 168 168);" @endif
                                 @if($track->created_at != null && $track->to_china != null && $track->to_almaty == null && $track->to_client == null && $track->client_accept == null && $track->to_city == null && $track->to_client_city == null) style="background-color: rgb(255 198 53);" @endif
                                 @if($track->created_at != null && $track->to_almaty != null && $track->to_client == null && $track->client_accept == null && $track->to_city == null && $track->to_client_city == null )  style="background-color: rgb(0 218 76);" @endif
                                 @if($track->created_at != null && $track->to_client != null && $track->client_accept == null && $track->to_city == null && $track->to_client_city == null )  style="background-color: rgb(53 174 255);" @endif
                                 @if($track->created_at != null && $track->to_city != null && $track->client_accept == null && $track->to_client_city == null )  style="background-color: rgb(0 218 76);" @endif
-                                @if($track->created_at != null && $track->to_client_city != null && $track->client_accept == null)  style="background-color: rgb(230 123 253);" @endif>
+                                @if($track->created_at != null && $track->to_client_city != null && $track->client_accept == null)  style="background-color: #ff6347;" @endif
+                                @if($track->created_at != null && $track->client_accept != null )  style="background-color: rgb(230 123 253);" @endif>
                                 <div class="grid grid-cols-3 gap-4">
                                     <div class="col-span-2 ml-5">
                                         <span>{{$track->track_code}}</span>
                                     </div>
                                     @if(Route::currentRouteName() != 'archive')
-                                    <div class="flex flex-row-reverse col-span-1">
-                                        <li class="mr-4">
-                                            @include('components.delete-track')
-                                        </li>
-                                        <li class="mr-4">
-                                            <form method="POST" action="{{ route('client-product-archive') }}">
-                                                @csrf
-                                                <x-text-input type="hidden" name="archive_track" value="{{$track->track_code}}" />
-                                                <button type="submit"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-                                                    </svg>
-                                                </button>
-                                            </form>
+                                        <div class="flex flex-row-reverse col-span-1">
+                                            <li class="mr-4">
+                                                <form method="POST" action="{{ route('client-product-archive') }}">
+                                                    @csrf
+                                                    <x-text-input type="hidden" name="archive_track" value="{{$track->track_code}}" />
+                                                    <button type="submit"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
 
-                                        </li>
-                                    </div>
-                                        @elseif(Route::currentRouteName() === 'archive')
+                                            </li>
+                                        </div>
+                                    @elseif(Route::currentRouteName() === 'archive')
                                         <div class="flex flex-row-reverse col-span-1">
                                             <li class="mr-4">
                                                 @include('components.delete-track')
@@ -179,22 +177,48 @@
                                     </li>
                                     <li class="flex items-center">
                                         <svg class="w-6 h-6 mr-1.5 @if($track->to_client == null) text-gray-200 @else text-green-400 @endif flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                                        <p><small>@if($track->city != '') Отправлено в город - {{ $track->city }} @else Получено клиентом @endif</small><br />
+                                        <p><small>@if($track->city != '') Отправлено в филиал - {{ $track->city }} @else Получено клиентом @endif</small><br />
                                             <span>{{$track->to_client}}</span></p>
                                     </li>
 
                                     @if($track->to_city != null)
-                                    <li class="flex items-center">
-                                        <svg class="w-6 h-6 mr-1.5 @if($track->to_city == null) text-gray-200 @else text-green-400 @endif flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                                        <p><small>Получено на складе ({{ ($track->city) }})</small><br />
-                                            <span>{{$track->to_city}}</span></p>
-                                    </li>
-                                    <li class="flex items-center">
-                                        <svg class="w-6 h-6 mr-1.5 @if($track->to_client_city == null) text-gray-200 @else text-green-400 @endif flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                                        <p><small>Получено клиентом</small><br />
-                                            <span>{{$track->to_client_city}}</span></p>
-                                    </li>
+                                        <li class="flex items-center">
+                                            <svg class="w-6 h-6 mr-1.5 @if($track->to_city == null) text-gray-200 @else text-green-400 @endif flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                            <p><small>Получено на складе ({{ ($track->city) }})</small><br />
+                                                <span>{{$track->to_city}}</span></p>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <svg class="w-6 h-6 mr-1.5 @if($track->to_client_city == null) text-gray-200 @else text-green-400 @endif flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                            <p><small>Получено клиентом</small><br />
+                                                <span>{{$track->to_client_city}}</span></p>
+                                        </li>
                                     @endif
+                                    <li class="grid items-center">
+
+                                        <div class="flex">
+                                            <svg class="w-6 h-6 mr-1.5 @if($track->client_accept == null) text-gray-200 @else text-green-400 @endif flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                            <p><small>Товар принят</small><br />
+                                                <span>{{$track->client_accept}}</span></p>
+                                        </div>
+
+                                        @if($track->to_client && $track->client_accept == null && $track->city == null )
+                                            <div class="mt-4">
+                                                <form method="POST" action="{{ route('accept-product', ['track_code' => $track->track_code]) }}">
+                                                    <x-classic-button class="w-9/12 mx-auto w-full justify-center inline-flex">
+                                                        {{ __('Принять товар') }}
+                                                    </x-classic-button>
+                                                </form>
+                                            </div>
+                                        @elseif($track->city && $track->to_client_city && $track->client_accept == null)
+                                            <div class="mt-4">
+                                                <form method="POST" action="{{ route('accept-product', ['track_code' => $track->track_code]) }}">
+                                                    <x-classic-button class="w-9/12 mx-auto w-full justify-center inline-flex">
+                                                        {{ __('Принять товар') }}
+                                                    </x-classic-button>
+                                                </form>
+                                            </div>
+                                        @endif
+                                    </li>
 
 
                                 </ul>
