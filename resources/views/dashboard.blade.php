@@ -116,7 +116,7 @@
                                 @if($track->created_at != null && $track->to_almaty != null && $track->to_client == null && $track->client_accept == null && $track->to_city == null && $track->to_client_city == null )  style="background-color: rgb(0 218 76);" @endif
                                 @if($track->created_at != null && $track->to_client != null && $track->client_accept == null && $track->to_city == null && $track->to_client_city == null )  style="background-color: rgb(53 174 255);" @endif
                                 @if($track->created_at != null && $track->to_city != null && $track->client_accept == null && $track->to_client_city == null )  style="background-color: rgb(0 218 76);" @endif
-                                @if($track->created_at != null && $track->to_client_city != null && $track->client_accept == null)  style="background-color: #ff6347;" @endif
+                                @if($track->created_at != null && $track->to_client_city != null && $track->client_accept == null)  style="background-color: rgb(0 218 76);" @endif
                                 @if($track->created_at != null && $track->client_accept != null )  style="background-color: rgb(230 123 253);" @endif>
                                 <div class="grid grid-cols-3 gap-4">
                                     <div class="col-span-2 ml-5">
