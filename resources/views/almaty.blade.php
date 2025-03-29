@@ -22,9 +22,18 @@
                             </div>
 
                         </div>
-                    <div id="track_codes_list" class="round_border min_height p-4">
-
-                    </div>
+                        <div class="min_height round_border md:mt-0 mt-4 p-4">
+                            <form method="POST" action="{{ route('almatyin-product') }}">
+                                <div class="w-full">
+                                <label for="track_codes">{{__('Трек коды')}}</label>
+                                    @csrf
+                                    <textarea id="track_codes" rows="15" class="block mt-1 w-full border-2 border-sky-400" type="text" name="track_codes" autofocus></textarea>
+                                    <x-primary-button class="mx-auto mt-4 w-full">
+                                        {{ __('Загрузить') }}
+                                    </x-primary-button>
+                                </div>
+                            </form>
+                        </div>
                     <div class="grid hidden" id="clear_track_codes">
 
                     </div>
