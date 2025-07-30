@@ -166,60 +166,48 @@
 
                         });*/
                     </script>
-                        <script>
+                    <script>
+                        let number = 1;
 
-                            let code = "";
-                            var number = 1;
-
-                            document.addEventListener('keypress', e => {
-                                if (e.key === "Enter") {
-                                    $('#track_codes_list').append('<h2>'+number+'. '+code+'</h2>');
-                                    $('#clear_track_codes').append(code+'\r\n');
+                        $('#track_code').on('keydown', function (e) {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                const code = $(this).val().trim();
+                                if (code !== '') {
+                                    $('#track_codes_list').append('<h2>' + number + '. ' + code + '</h2>');
+                                    $('#clear_track_codes').append(code + '\r\n');
                                     $("#count").text(number);
                                     number++;
-                                    code = "";
-                                } else {
-                                    if(e.code[0] === "D"){
-                                        code += e.code[5]
-                                        return
-                                    }
-                                    code += e.code[3];
+
+                                    // Вручную сабмитим форму
+                                    $("#getInfoForm").submit();
                                 }
-                            });
+                            }
+                        });
 
-                            /* прикрепить событие submit к форме */
-                            $("#almatyOut").submit(function(event) {
-                                /* отключение стандартной отправки формы */
-                                event.preventDefault();
+                        $("#almatyOut").submit(function(event) {
+                            event.preventDefault();
+                            var $form = $(this),
+                                track_codes = $("#clear_track_codes").html();
+                            to_city = $("#city_name").text();
+                            url = $form.attr('action');
 
-                                /* собираем данные с элементов страницы: */
-                                var $form = $( this ),
-                                    track_codes = $("#clear_track_codes").html();
-                                to_city = $("#city_name").text();
-                                url = $form.attr( 'action' );
+                            $.post(url, { track_codes: track_codes, 'to_city': to_city })
+                                .done(function(data) {
+                                    $('#track_code').val('');
+                                    location.reload();
+                                });
+                        });
 
-                                /* отправляем данные методом POST */
-                                $.post( url, { track_codes: track_codes, 'to_city': to_city } )
-                                    .done(function( data ) {
-                                        document.getElementById('track_code').value = '';
-                                        location.reload();
-                                    });
+                        $("#clear").click(function(event) {
+                            event.preventDefault();
+                            $("#track_codes_list").html('');
+                            $("#clear_track_codes").html('');
+                            number = 1;
+                            $("#count").text('0');
+                        });
+                    </script>
 
-                            });
-
-                            /* прикрепить событие submit к форме */
-                            $("#clear").click(function(event) {
-                                /* отключение стандартной отправки формы */
-                                event.preventDefault();
-
-                                $("#track_codes_list").html('');
-                                $("#clear_track_codes").html('');
-                                number = 1;
-                                $("#count").text('0');
-
-                            });
-
-                        </script>
                 </div>
 
                     @include('components.scanner-settings')
