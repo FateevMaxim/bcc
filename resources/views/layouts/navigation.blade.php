@@ -39,21 +39,16 @@
                         <p class="mb-2 text-sm text-dark font-bold">Адрес склада в Китае</p>
                         @if(isset(Auth::user()->branchinfo->title))
                             <p class="mb-2">
-                                <b>Образец {{ Auth::user()->branchinfo->title }}</b>
+                                <b style="color:red;">Образец {{ Auth::user()->branchinfo->title }}</b>
                             </p>
                             <p class="mb-6 text-sm text-dark" id="china">@yield( 'chinaaddress' ) {{  Auth::user()->branchInfo->address }}<br />
-                                <b>({{ Auth::user()->login }}){{ Auth::user()->name }} </b><br />
-                                收货人: <b>@yield( 'title_text' )({{ Auth::user()->city }})</b> <br />
                             </p>
                             <p class="mb-6 text-sm text-dark" style="display: none;" id="chinaaddress"> @yield( 'chinaaddress' ) {{ \Illuminate\Support\Facades\Auth::user()->branchinfo->address }}.{{ Auth::user()->code }}.{{ \Illuminate\Support\Facades\Auth::user()->name }}.{{ Auth::user()->city }}</p>
                             <button onclick="copyText()" class="focus:outline-none text-white bg-[#b6da3a] hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Копировать</button>
                         @else
-                            <p class="mb-6 text-sm text-dark" id="china">BBC(Almaty)@yield( 'chinaaddress' ) <br />
-                                <b>({{ \Illuminate\Support\Facades\Auth::user()->login }}){{ \Illuminate\Support\Facades\Auth::user()->name }} </b><br />
-                                收货人: <b>@yield( 'title_text' )({{ Auth::user()->city }})</b> <br />
-                                电话: <b>@yield( 'address_two' )</b>
+                            <p class="mb-6 text-sm text-dark" id="china">@yield( 'chinaaddress' ) <br />
                             </p>
-                            <p class="mb-6 text-sm text-dark" style="display: none;" id="chinaaddress">BBC(Almaty){{ Auth::user()->code }}@yield( 'address_two' ) @yield( 'chinaaddress' ) BBC.{{ Auth::user()->code }}.{{ \Illuminate\Support\Facades\Auth::user()->name }}.{{ Auth::user()->city }}</p>
+                            <p class="mb-6 text-sm text-dark" style="display: none;" id="chinaaddress">{{ Auth::user()->code }}@yield( 'address_two' ) @yield( 'chinaaddress' ) BBC.{{ Auth::user()->code }}.{{ \Illuminate\Support\Facades\Auth::user()->name }}.{{ Auth::user()->city }}</p>
                             <button onclick="copyText()" class="focus:outline-none text-white bg-[#b6da3a] hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Копировать</button>
                         @endif
 
