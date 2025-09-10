@@ -58,8 +58,8 @@ class DashboardController extends Controller
                 $count = TrackList::query()->whereDate('to_city', Carbon::today())->where('status', 'Получено на складе в мкр.Кулагер 7')->count();
                 return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'мкр.Кулагер 7', 'qr' => $qrKulager, 'china_address' => $china_address]);
         }elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'bekin') {
-                $count = TrackList::query()->whereDate('to_city', Carbon::today())->where('status', 'Получено на складе в ул.Майлина 212')->count();
-                return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'ул.Майлина', 'qr' => $qrBek, 'china_address' => $china_address]);
+                $count = TrackList::query()->whereDate('to_city', Carbon::today())->where('status', 'Получено на складе ул.Майлина 212')->count();
+                return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'ул.Майлина 212', 'qr' => $qrBek, 'china_address' => $china_address]);
             /*}elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'astanain') {
                     $count = TrackList::query()->whereDate('to_city', Carbon::today())->where('status', 'Получено на складе в Астане')->count();
                     return view('almaty', ['count' => $count, 'config' => $config, 'cityin' => 'Астане', 'qr' => $qrAstana, 'china_address' => $china_address]);
