@@ -76,7 +76,7 @@ class DashboardController extends Controller
             return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'мкр.Кулагер 7', 'qr' => $qrKulager, 'china_address' => $china_address]);
         } elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'bekout') {
             $count = TrackList::query()->whereDate('to_client_city', Carbon::today())->where('city', 'ул.Майлина 212')->count();
-            return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'ул.Майлина', 'qr' => $qrBek, 'china_address' => $china_address]);
+            return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'ул.Майлина 212', 'qr' => $qrBek, 'china_address' => $china_address]);
         }/* elseif (Auth::user()->is_active === 1 && Auth::user()->type === 'tarazout') {
             $count = TrackList::query()->whereDate('to_client_city', Carbon::today())->count();
             return view('almatyout', ['count' => $count, 'config' => $config, 'cities' => $cities, 'cityin' => 'Таразе', 'qr' => $qrTaraz, 'china_address' => $china_address]);
