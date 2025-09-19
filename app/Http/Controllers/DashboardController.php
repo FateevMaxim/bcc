@@ -39,7 +39,7 @@ class DashboardController extends Controller
                     'track_lists.city', 'track_lists.to_client_city', 'track_lists.client_accept', 'track_lists.status')
                 ->where('client_track_lists.user_id', Auth::user()->id)
                 ->where('client_track_lists.status',null)
-                ->orderByDesc('client_track_lists.id')
+                ->orderBy('client_track_lists.id')
                 ->get();
             $count = count($tracks);
             return view('dashboard')->with(compact('tracks', 'count', 'messages', 'config', 'china_address'));
