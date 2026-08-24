@@ -41,7 +41,7 @@
                             </button>
                             <div class="p-6 text-center">
                                 <h4 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Добавление трек кода</h4>
-                                <form method="POST" action="{{ route('client-product') }}">
+                                <form method="POST" action="{{ route('client-product') }}" onsubmit="this.querySelector('button[type=submit]').disabled = true;">
                                     @csrf
                                     <x-text-input id="track_code" class="block mt-1 w-full mb-2 border-2" type="text" required="required" placeholder="Введите трек код" name="track_code" :value="old('track_code')" required autofocus autocomplete="track_code" />
                                     <textarea id="detail" name="detail" rows="5" required="required" class="block mb-2 mx-auto w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 " placeholder="Детали..."></textarea>

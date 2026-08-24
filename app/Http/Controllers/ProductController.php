@@ -164,15 +164,17 @@ class ProductController extends Controller
             return redirect()->back()->with('error', 'Неверный трек, пожалуйста, перепроверьте');
         }
 
-        $issetTrack = ClientTrackList::query()->where('track_code', $request["track_code"])->exists();
-        if ($issetTrack){
+        $track_list = ClientTrackList::firstOrCreate(
+            ['track_code' => $request["track_code"]],
+            [
+                'detail' => $request["detail"],
+                'user_id' => Auth::user()->id
+            ]
+        );
+
+        if (!$track_list->wasRecentlyCreated) {
             return redirect()->back()->with('error', 'Трек код уже добавлен');
         }
-        $track_list = new ClientTrackList();
-        $track_list->track_code = $request["track_code"];
-        $track_list->detail = $request["detail"];
-        $track_list->user_id = Auth::user()->id;
-        $track_list->save();
 
         return redirect()->back()->with('message', 'Трек код успешно добавлен');
     }
