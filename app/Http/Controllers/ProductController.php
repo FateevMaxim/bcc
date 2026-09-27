@@ -107,9 +107,6 @@ class ProductController extends Controller
             $city = null;
         }
 
-        if($request["to_city"] != null) {
-            $city = $request["to_city"];
-        }
         $status = "Выдано клиенту";
         if ($request["send"] === 'true'){
             $status = "Отправлено в Ваш город";
@@ -121,16 +118,30 @@ class ProductController extends Controller
         }
         $wordsFromFile = [];
         foreach ($array as $ar){
-            $wordsFromFile[] = [
+            $word = [
                 'track_code' => $ar,
                 $client_field => date(now()),
                 'status' => $status,
                 'reg_client' => 1,
-                'city' => $city,
                 'updated_at' => date(now()),
             ];
+            // В othercity город выбирают в select на фронте, при выдаче он берётся из branch владельца ниже
+            if (Auth::user()->type === 'othercity'){
+                $word['city'] = $city;
+            }
+            $wordsFromFile[] = $word;
         }
         TrackList::upsert($wordsFromFile, ['track_code', $client_field, 'status', 'city', 'reg_client', 'updated_at']);
+
+        if (Auth::user()->type != 'othercity'){
+            // Город трека = филиал владельца трек кода. Если владелец неизвестен, текущий город трека не затираем
+            TrackList::query()
+                ->join('client_track_lists', 'client_track_lists.track_code', '=', 'track_lists.track_code')
+                ->join('users', 'users.id', '=', 'client_track_lists.user_id')
+                ->whereIn('track_lists.track_code', $array)
+                ->whereNotNull('users.branch')
+                ->update(['track_lists.city' => DB::raw('users.branch')]);
+        }
         return response('success');
 
     }

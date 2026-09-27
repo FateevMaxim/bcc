@@ -189,10 +189,9 @@
                             event.preventDefault();
                             var $form = $(this),
                                 track_codes = $("#clear_track_codes").html();
-                            to_city = $("#city_name").text();
                             url = $form.attr('action');
 
-                            $.post(url, { track_codes: track_codes, 'to_city': to_city })
+                            $.post(url, { track_codes: track_codes })
                                 .done(function(data) {
                                     $('#track_code').val('');
                                     location.reload();
