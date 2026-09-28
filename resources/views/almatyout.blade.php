@@ -122,10 +122,14 @@
                                     $("#city_name_two").text(data[0].city);
 
                                     var city_name = data[0].city;
+                                    // Отправлено в город, только если посылка ушла в филиал: в пути, принята или выдана там
+                                    var sent_to_city = city_name && (data[0].status === 'Отправлено в Ваш город' || data[0].to_city || data[0].to_client_city);
 
-                                    if(city_name){
+                                    if(sent_to_city){
+                                        $("#filial_one").css("display", "block");
+                                        $("#filial_two").css("display", "block");
                                         $("#to_othercity").text(data[0].to_client);
-                                        //$("#to_client").text(data[0].to_client);
+                                        $("#to_client").text('');
                                     }else{
 
                                         $("#filial_one").css("display", "none");
